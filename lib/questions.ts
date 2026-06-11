@@ -27,6 +27,98 @@ function getJoinedCategory(
   return categories
 }
 
+function mapQuestionRow(row: QuestionRow): Question | null {
+  const category = getJoinedCategory(row.categories)
+  if (!category) return null
+
+  return {
+    id: row.id,
+    categoryId: row.category_id,
+    promptText: row.prompt_text,
+    premium: row.premium,
+    shareCount: row.share_count,
+    categoryTitle: category.title,
+  }
+}
+
+export async function fetchQuestionById(id: number): Promise<Question | null> {
+  const supabase = getSupabase()
+
+  if (!supabase) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from("questions")
+    .select(
+      `
+      id,
+      category_id,
+      prompt_text,
+      premium,
+      share_count,
+      categories (
+        id,
+        title,
+        icon,
+        premium,
+        sort_order,
+        active
+      )
+    `
+    )
+    .eq("id", id)
+    .eq("active", true)
+    .maybeSingle()
+
+  if (error || !data) return null
+
+  return mapQuestionRow(data as QuestionRow)
+}
+
+export async function fetchFollowUpQuestions(
+  categoryId: number,
+  excludeId: number,
+  limit = 3
+): Promise<Question[]> {
+  const supabase = getSupabase()
+
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from("questions")
+    .select(
+      `
+      id,
+      category_id,
+      prompt_text,
+      premium,
+      share_count,
+      categories (
+        id,
+        title,
+        icon,
+        premium,
+        sort_order,
+        active
+      )
+    `
+    )
+    .eq("category_id", categoryId)
+    .eq("active", true)
+    .neq("id", excludeId)
+    .order("id", { ascending: true })
+    .limit(limit)
+
+  if (error) return []
+
+  return ((data as QuestionRow[] | null) ?? [])
+    .map((row) => mapQuestionRow(row))
+    .filter((question): question is Question => question !== null)
+}
+
 export async function fetchQuestionsByCategoryId(
   categoryId: number
 ): Promise<Question[]> {
@@ -62,18 +154,6 @@ export async function fetchQuestionsByCategoryId(
   if (error) throw error
 
   return ((data as QuestionRow[] | null) ?? [])
-    .map((row) => {
-      const category = getJoinedCategory(row.categories)
-      if (!category) return null
-
-      return {
-        id: row.id,
-        categoryId: row.category_id,
-        promptText: row.prompt_text,
-        premium: row.premium,
-        shareCount: row.share_count,
-        categoryTitle: category.title,
-      }
-    })
+    .map((row) => mapQuestionRow(row))
     .filter((question): question is Question => question !== null)
 }

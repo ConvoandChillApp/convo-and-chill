@@ -5,12 +5,16 @@ import { ArrowLeft, ArrowRight, Share2, User } from "lucide-react"
 import { CategoryPills } from "@/components/category-pills"
 import { QuestionCard } from "@/components/question-card"
 import { BottomNav } from "@/components/bottom-nav"
+import { Toast } from "@/components/toast"
 import { useCategories } from "@/hooks/use-categories"
 import { useQuestions } from "@/hooks/use-questions"
+import { buildShareUrl } from "@/lib/share"
+import { incrementShareCount } from "@/lib/share-analytics"
 
 export default function Page() {
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState("Home")
+  const [toastVisible, setToastVisible] = useState(false)
   const {
     categories,
     loading: categoriesLoading,
@@ -40,20 +44,35 @@ export default function Page() {
   const loading = categoriesLoading || questionsLoading
   const error = categoriesError ?? questionsError
 
+  function showCopiedToast() {
+    setToastVisible(true)
+    window.setTimeout(() => setToastVisible(false), 2000)
+  }
+
   async function handleShare() {
     if (!current) return
 
-    const shareData = {
-      title: "Convo & Chill",
-      text: current.promptText,
-    }
+    const url = buildShareUrl(window.location.origin, current.id)
+
+    void incrementShareCount(current.id)
 
     if (navigator.share) {
-      await navigator.share(shareData)
+      try {
+        await navigator.share({
+          title: "Convo & Chill",
+          text: current.promptText,
+          url,
+        })
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return
+        await navigator.clipboard.writeText(url)
+        showCopiedToast()
+      }
       return
     }
 
-    await navigator.clipboard.writeText(current.promptText)
+    await navigator.clipboard.writeText(url)
+    showCopiedToast()
   }
 
   return (
@@ -165,6 +184,7 @@ export default function Page() {
       </main>
 
       <BottomNav active={activeTab} onSelect={setActiveTab} />
+      <Toast message="Link copied!" visible={toastVisible} />
     </div>
   )
 }
