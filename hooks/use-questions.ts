@@ -16,10 +16,6 @@ export function useQuestions(categoryId: number | null) {
 
   useEffect(() => {
     if (categoryId === null) {
-      setQuestions([])
-      setCurrentIndex(0)
-      setLoading(false)
-      setError(null)
       return
     }
 
@@ -59,14 +55,19 @@ export function useQuestions(categoryId: number | null) {
     }
   }, [categoryId])
 
-  const current = questions[currentIndex] ?? null
-  const total = questions.length
-  const canGoPrev = currentIndex > 0
-  const canGoNext = currentIndex < questions.length - 1
+  const activeQuestions = categoryId === null ? [] : questions
+  const activeIndex = categoryId === null ? 0 : currentIndex
+  const activeLoading = categoryId === null ? false : loading
+  const activeError = categoryId === null ? null : error
+
+  const current = activeQuestions[activeIndex] ?? null
+  const total = activeQuestions.length
+  const canGoPrev = activeIndex > 0
+  const canGoNext = activeIndex < activeQuestions.length - 1
 
   const goNext = useCallback(() => {
-    setCurrentIndex((index) => Math.min(index + 1, questions.length - 1))
-  }, [questions.length])
+    setCurrentIndex((index) => Math.min(index + 1, activeQuestions.length - 1))
+  }, [activeQuestions.length])
 
   const goPrev = useCallback(() => {
     setCurrentIndex((index) => Math.max(index - 1, 0))
@@ -74,10 +75,10 @@ export function useQuestions(categoryId: number | null) {
 
   return {
     current,
-    currentNumber: total > 0 ? currentIndex + 1 : 0,
+    currentNumber: total > 0 ? activeIndex + 1 : 0,
     total,
-    loading,
-    error,
+    loading: activeLoading,
+    error: activeError,
     canGoPrev,
     canGoNext,
     goNext,

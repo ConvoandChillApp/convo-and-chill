@@ -1,16 +1,45 @@
 "use client"
 
+import { Lock } from "lucide-react"
 import type { Category } from "@/types/category"
 import { categorySlug } from "@/lib/category-utils"
 
-const GRADIENTS = [
-  "from-violet-500 via-purple-500 to-fuchsia-600",
-  "from-orange-400 via-pink-500 to-rose-500",
-  "from-cyan-400 via-blue-500 to-indigo-600",
-  "from-emerald-400 via-teal-500 to-cyan-600",
-  "from-amber-400 via-orange-500 to-red-500",
-  "from-pink-400 via-rose-500 to-purple-600",
-] as const
+type CategoryStyle = {
+  emoji: string
+  border: string
+  glow: string
+  activeGlow: string
+  lock?: boolean
+}
+
+const CATEGORY_STYLES: Record<string, CategoryStyle> = {
+  dating: {
+    emoji: "💕",
+    border: "border-pink-500",
+    glow: "shadow-[0_0_10px_rgba(236,72,153,0.35)]",
+    activeGlow: "shadow-[0_0_22px_rgba(236,72,153,0.85)]",
+  },
+  controversial: {
+    emoji: "🔥",
+    border: "border-orange-500",
+    glow: "shadow-[0_0_10px_rgba(249,115,22,0.35)]",
+    activeGlow: "shadow-[0_0_22px_rgba(249,115,22,0.85)]",
+  },
+  "after-dark": {
+    emoji: "😈",
+    border: "border-purple-500",
+    glow: "shadow-[0_0_10px_rgba(168,85,247,0.35)]",
+    activeGlow: "shadow-[0_0_22px_rgba(168,85,247,0.85)]",
+    lock: true,
+  },
+}
+
+const DEFAULT_STYLE: CategoryStyle = {
+  emoji: "✨",
+  border: "border-white/20",
+  glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]",
+  activeGlow: "shadow-[0_0_16px_rgba(255,255,255,0.25)]",
+}
 
 interface CategoryGridProps {
   categories: Category[]
@@ -24,27 +53,26 @@ export function CategoryGrid({
   onSelect,
 }: CategoryGridProps) {
   return (
-    <div className="grid grid-cols-3 gap-2.5">
-      {categories.map((category, index) => {
+    <div className="flex w-full gap-2">
+      {categories.map((category) => {
         const slug = categorySlug(category.title)
         const isActive = activeCategory === slug
-        const gradient = GRADIENTS[index % GRADIENTS.length]
+        const style = CATEGORY_STYLES[slug] ?? DEFAULT_STYLE
 
         return (
           <button
             key={category.id}
             type="button"
             onClick={() => onSelect(slug)}
-            className={`relative overflow-hidden rounded-2xl px-3 py-3 text-left transition-transform ${
-              isActive ? "scale-[1.02] ring-2 ring-white/30" : "opacity-80 hover:opacity-100"
-            }`}
+            className={`relative flex min-w-0 flex-1 items-center gap-2 rounded-xl border bg-[#1A1A2E] px-2.5 py-3 transition-shadow ${
+              style.border
+            } ${isActive ? style.activeGlow : style.glow}`}
           >
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${gradient} ${
-                isActive ? "opacity-100" : "opacity-70"
-              }`}
-            />
-            <span className="relative z-10 block text-xs font-semibold leading-tight text-white">
+            {style.lock ? (
+              <Lock className="absolute right-2 top-2 size-3 text-purple-400/80" />
+            ) : null}
+            <span className="shrink-0 text-base leading-none">{style.emoji}</span>
+            <span className="truncate text-left text-xs font-bold text-white sm:text-sm">
               {category.title}
             </span>
           </button>

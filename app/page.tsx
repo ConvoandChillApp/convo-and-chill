@@ -1,13 +1,15 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { Header } from "@/components/header"
-import { CategoryGrid } from "@/components/category-grid"
-import { MainCard } from "@/components/main-card"
-import { Controls } from "@/components/controls"
-import { Progress } from "@/components/progress-bar"
-import { BottomNav } from "@/components/bottom-nav"
-import { Toast } from "@/components/toast"
+import { useMemo, useState } from "react"
+import {
+  BottomNav,
+  CategoryGrid,
+  Controls,
+  Header,
+  MainCard,
+  Progress,
+  Toast,
+} from "@/components"
 import { useCategories } from "@/hooks/use-categories"
 import { useQuestions } from "@/hooks/use-questions"
 import { categorySlug } from "@/lib/category-utils"
@@ -28,15 +30,21 @@ export default function HomePage() {
     error: categoriesError,
   } = useCategories()
 
+  const resolvedCategorySlug = useMemo(() => {
+    if (activeCategorySlug) return activeCategorySlug
+    if (categories.length === 0) return null
+    return categorySlug(categories[0].title)
+  }, [activeCategorySlug, categories])
+
   const activeCategoryId = useMemo(() => {
-    if (!activeCategorySlug) return null
+    if (!resolvedCategorySlug) return null
 
     return (
       categories.find(
-        (category) => categorySlug(category.title) === activeCategorySlug
+        (category) => categorySlug(category.title) === resolvedCategorySlug
       )?.id ?? null
     )
-  }, [categories, activeCategorySlug])
+  }, [categories, resolvedCategorySlug])
 
   const {
     current,
@@ -49,12 +57,6 @@ export default function HomePage() {
     goNext,
     goPrev,
   } = useQuestions(activeCategoryId)
-
-  useEffect(() => {
-    if (categories.length > 0 && activeCategorySlug === null) {
-      setActiveCategorySlug(categorySlug(categories[0].title))
-    }
-  }, [categories, activeCategorySlug])
 
   const loading = categoriesLoading || questionsLoading
   const error = categoriesError ?? questionsError
@@ -120,12 +122,12 @@ export default function HomePage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-5 px-4 pb-28 pt-6">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 bg-[#0A0A0F] px-4 pb-28 pt-6">
       <Header />
 
       <CategoryGrid
         categories={categories}
-        activeCategory={activeCategorySlug ?? ""}
+        activeCategory={resolvedCategorySlug ?? ""}
         onSelect={setActiveCategorySlug}
       />
 
@@ -134,7 +136,10 @@ export default function HomePage() {
         onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
         onTouchEnd={(e) => handleTouchEnd(e.changedTouches[0].clientX)}
       >
-        <MainCard question={cardQuestion} />
+        <MainCard
+          question={cardQuestion}
+          animationKey={current?.id ?? "loading"}
+        />
       </div>
 
       <Controls

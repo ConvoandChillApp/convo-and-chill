@@ -3,20 +3,27 @@ interface ProgressProps {
   total: number
 }
 
-export function Progress({ current, total }: ProgressProps) {
-  const percent = total > 0 ? (current / total) * 100 : 0
+export function ProgressBar({ current, total }: ProgressProps) {
+  const percent = total > 0 ? Math.round((current / total) * 100) : 0
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+    <div className="flex flex-col gap-2">
+      <div className="flex items-baseline justify-between">
+        <p className="text-sm font-semibold tabular-nums">
+          <span className="text-pink-400">{current}</span>
+          <span className="text-white/60"> / </span>
+          <span className="text-white">{total}</span>
+        </p>
+        <span className="text-sm font-medium tabular-nums text-white/70">
+          {percent}%
+        </span>
+      </div>
+      <div className="h-1 w-full overflow-hidden rounded-full bg-[#1A1A2E]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 transition-all duration-300"
+          className="h-full rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600 transition-all duration-300 ease-out"
           style={{ width: `${percent}%` }}
         />
       </div>
-      <span className="text-xs font-medium tabular-nums text-white/60">
-        {current} / {total}
-      </span>
     </div>
   )
 }
