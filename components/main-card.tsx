@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { categorySlug } from "@/lib/category-utils"
 
@@ -87,10 +88,20 @@ export function MainCard({ question, animationKey = "default" }: MainCardProps) 
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-3 text-xs font-medium text-white/50">
-            <ArrowLeft className="size-4" aria-hidden="true" />
-            <span>Swipe for more</span>
-            <ArrowRight className="size-4" aria-hidden="true" />
+          <div className="flex flex-col items-center">
+            <Image
+              src="/logo.png"
+              alt=""
+              width={100}
+              height={26}
+              className="mb-2 h-7 w-auto object-contain opacity-90"
+              aria-hidden
+            />
+            <div className="flex items-center justify-center gap-3 text-xs font-medium text-white/50">
+              <ArrowLeft className="size-4" aria-hidden="true" />
+              <span>Swipe for more</span>
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </article>
