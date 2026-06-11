@@ -20,7 +20,6 @@ export default function HomePage() {
   const [activeCategorySlug, setActiveCategorySlug] = useState<string | null>(
     null
   )
-  const [activeTab, setActiveTab] = useState("home")
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [toastVisible, setToastVisible] = useState(false)
 
@@ -153,7 +152,7 @@ export default function HomePage() {
 
       <Progress current={currentNumber} total={total} />
 
-      <BottomNav active={activeTab} onChange={setActiveTab} />
+      <BottomNav />
       <Toast message="Link copied!" visible={toastVisible} />
     </main>
   )

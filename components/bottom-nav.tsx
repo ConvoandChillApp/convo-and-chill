@@ -1,39 +1,71 @@
 "use client"
 
+import { usePathname, useRouter } from "next/navigation"
 import { Crown, Home, User } from "lucide-react"
 
 const TABS = [
-  { id: "home", label: "Home", icon: Home, activeColor: "text-cyan-400" },
+  {
+    id: "home",
+    label: "Home",
+    icon: Home,
+    href: "/",
+    activeColor: "text-cyan-400",
+  },
   {
     id: "premium",
     label: "Premium",
     icon: Crown,
+    href: "/premium",
     activeColor: "text-amber-400",
   },
-  { id: "me", label: "Me", icon: User, activeColor: "text-white" },
+  {
+    id: "me",
+    label: "Me",
+    icon: User,
+    href: null,
+    activeColor: "text-white",
+  },
 ] as const
 
+function getActiveTab(pathname: string): string {
+  if (pathname.startsWith("/premium")) return "premium"
+  if (pathname.startsWith("/me")) return "me"
+  return "home"
+}
+
 interface BottomNavProps {
-  active: string
+  active?: string
   onSelect?: (tab: string) => void
   onChange?: (tab: string) => void
 }
 
 export function BottomNav({ active, onSelect, onChange }: BottomNavProps) {
-  const handleTabChange = onChange ?? onSelect ?? (() => {})
+  const pathname = usePathname()
+  const router = useRouter()
+  const resolvedActive = active ?? getActiveTab(pathname)
+  const legacyHandler = onChange ?? onSelect
+
+  function handleTabClick(tabId: string, href: string | null) {
+    if (href) {
+      router.push(href)
+      return
+    }
+
+    legacyHandler?.(tabId)
+  }
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/5 bg-[#0A0A0F]/95 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-md items-center justify-around px-6 py-3">
-        {TABS.map(({ id, label, icon: Icon, activeColor }) => {
-          const isActive = active === id
+        {TABS.map(({ id, label, icon: Icon, href, activeColor }) => {
+          const isActive = resolvedActive === id
           const isPremium = id === "premium"
 
           return (
             <button
               key={id}
               type="button"
-              onClick={() => handleTabChange(id)}
+              onClick={() => handleTabClick(id, href)}
               className={`relative flex flex-col items-center gap-1 transition-colors ${
                 isPremium
                   ? "text-amber-400"
