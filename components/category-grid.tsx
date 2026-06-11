@@ -1,6 +1,5 @@
 "use client"
 
-import { Lock } from "lucide-react"
 import type { Category } from "@/types/category"
 import { categorySlug } from "@/lib/category-utils"
 
@@ -9,7 +8,6 @@ type CategoryStyle = {
   border: string
   glow: string
   activeGlow: string
-  lock?: boolean
 }
 
 const CATEGORY_STYLES: Record<string, CategoryStyle> = {
@@ -30,7 +28,6 @@ const CATEGORY_STYLES: Record<string, CategoryStyle> = {
     border: "border-purple-500",
     glow: "shadow-[0_0_10px_rgba(168,85,247,0.35)]",
     activeGlow: "shadow-[0_0_22px_rgba(168,85,247,0.85)]",
-    lock: true,
   },
 }
 
@@ -68,9 +65,6 @@ export function CategoryGrid({
               style.border
             } ${isActive ? style.activeGlow : style.glow}`}
           >
-            {style.lock ? (
-              <Lock className="absolute right-2 top-2 size-3 text-purple-400/80" />
-            ) : null}
             <span className="shrink-0 text-base leading-none">{style.emoji}</span>
             <span className="truncate text-left text-xs font-bold text-white sm:text-sm">
               {category.title}

@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowLeft, ArrowRight, Heart } from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import { categorySlug } from "@/lib/category-utils"
 
 export type MainCardQuestion = {
@@ -81,18 +81,10 @@ export function MainCard({ question, animationKey = "default" }: MainCardProps) 
             </span>
           ) : null}
 
-          <div className="relative flex flex-1 items-center justify-center px-2">
-            <Heart
-              className="absolute left-0 size-5 fill-pink-500/30 text-pink-400/60"
-              aria-hidden="true"
-            />
-            <p className="px-8 text-center text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
+          <div className="flex flex-1 items-center justify-center px-2">
+            <p className="text-center text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
               {renderHighlightedText(question.text)}
             </p>
-            <Heart
-              className="absolute right-0 size-5 fill-pink-500/30 text-pink-400/60"
-              aria-hidden="true"
-            />
           </div>
 
           <div className="flex items-center justify-center gap-3 text-xs font-medium text-white/50">
