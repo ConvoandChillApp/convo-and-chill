@@ -1,11 +1,17 @@
+import Image from "next/image"
 import { User } from "lucide-react"
 
 export function Header() {
   return (
     <header className="flex items-center justify-between">
-      <h1 className="text-base font-bold tracking-wide text-white sm:text-lg">
-        CONVO AND CHILL
-      </h1>
+      <Image
+        src="/logo.png"
+        alt="Convo and Chill"
+        width={160}
+        height={36}
+        className="h-9 w-auto object-contain"
+        priority
+      />
       <button
         type="button"
         aria-label="Profile"
