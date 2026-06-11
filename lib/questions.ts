@@ -1,4 +1,4 @@
-import { getSupabase } from "@/lib/supabase"
+import { getSupabase, SUPABASE_CONFIG_ERROR } from "@/lib/supabase"
 import type { Question } from "@/types/question"
 
 type JoinedCategory = {
@@ -30,7 +30,13 @@ function getJoinedCategory(
 export async function fetchQuestionsByCategoryId(
   categoryId: number
 ): Promise<Question[]> {
-  const { data, error } = await getSupabase()
+  const supabase = getSupabase()
+
+  if (!supabase) {
+    throw new Error(SUPABASE_CONFIG_ERROR)
+  }
+
+  const { data, error } = await supabase
     .from("questions")
     .select(
       `

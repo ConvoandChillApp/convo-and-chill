@@ -93,11 +93,14 @@ export default function Page() {
           {loading ? (
             <div className="mx-auto flex w-full max-w-sm flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.06] p-12 backdrop-blur-sm">
               <div className="size-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-              <p className="mt-4 text-sm text-white/60">Loading questions...</p>
+              <p className="mt-4 text-sm text-white/60">Loading...</p>
             </div>
           ) : error ? (
             <div className="mx-auto w-full max-w-sm rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center">
-              <p className="text-sm text-red-200">{error}</p>
+              <p className="text-sm font-medium text-red-200">
+                Unable to load content
+              </p>
+              <p className="mt-2 text-sm text-red-200/80">{error}</p>
             </div>
           ) : current ? (
             <QuestionCard

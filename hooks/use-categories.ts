@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { fetchActiveCategories } from "@/lib/categories"
+import {
+  formatSupabaseError,
+  logSupabaseError,
+} from "@/lib/supabase-error"
 import type { Category } from "@/types/category"
 
 export function useCategories() {
@@ -22,10 +26,12 @@ export function useCategories() {
           setCategories(data)
         }
       } catch (err) {
+        logSupabaseError("useCategories", err)
+
         if (!cancelled) {
           setCategories([])
           setError(
-            err instanceof Error ? err.message : "Failed to load categories"
+            formatSupabaseError(err, "Failed to load categories")
           )
         }
       } finally {

@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { fetchQuestionsByCategoryId } from "@/lib/questions"
+import {
+  formatSupabaseError,
+  logSupabaseError,
+} from "@/lib/supabase-error"
 import type { Question } from "@/types/question"
 
 export function useQuestions(categoryId: number | null) {
@@ -33,10 +37,12 @@ export function useQuestions(categoryId: number | null) {
           setQuestions(data)
         }
       } catch (err) {
+        logSupabaseError("useQuestions", err)
+
         if (!cancelled) {
           setQuestions([])
           setError(
-            err instanceof Error ? err.message : "Failed to load questions"
+            formatSupabaseError(err, "Failed to load questions")
           )
         }
       } finally {
