@@ -3,17 +3,19 @@
 import { Heart, Home, Settings } from "lucide-react"
 
 const TABS = [
-  { id: "Home", label: "Home", icon: Home },
-  { id: "Saved", label: "Saved", icon: Heart },
-  { id: "Settings", label: "Settings", icon: Settings },
+  { id: "home", label: "Home", icon: Home },
+  { id: "saved", label: "Saved", icon: Heart },
+  { id: "settings", label: "Settings", icon: Settings },
 ] as const
 
 interface BottomNavProps {
   active: string
-  onSelect: (tab: string) => void
+  onSelect?: (tab: string) => void
+  onChange?: (tab: string) => void
 }
 
-export function BottomNav({ active, onSelect }: BottomNavProps) {
+export function BottomNav({ active, onSelect, onChange }: BottomNavProps) {
+  const handleTabChange = onChange ?? onSelect ?? (() => {})
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[#0d0d0d]/90 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-md items-center justify-around px-6 py-3">
@@ -24,7 +26,7 @@ export function BottomNav({ active, onSelect }: BottomNavProps) {
             <button
               key={id}
               type="button"
-              onClick={() => onSelect(id)}
+              onClick={() => handleTabChange(id)}
               className={`flex flex-col items-center gap-1 transition-colors ${
                 isActive ? "text-white" : "text-white/40 hover:text-white/70"
               }`}
