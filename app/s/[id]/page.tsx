@@ -6,6 +6,7 @@ import { QuestionCard } from "@/components/question-card"
 import { fetchFollowUpQuestions, fetchQuestionById } from "@/lib/questions"
 import { recordShareEvent } from "@/lib/share-analytics"
 import {
+  getOgImageUrl,
   getOgTitle,
   getServerShareUrl,
   OG_DESCRIPTION,
@@ -45,6 +46,11 @@ export async function generateMetadata({
     }
   }
 
+  const ogImageUrl = getOgImageUrl(
+    question.promptText,
+    question.categoryTitle
+  )
+
   return {
     title: getOgTitle(question.promptText),
     description: OG_DESCRIPTION,
@@ -55,11 +61,20 @@ export async function generateMetadata({
       siteName: "Convo & Chill",
       type: "website",
       locale: "en_US",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: question.promptText,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: getOgTitle(question.promptText),
       description: OG_DESCRIPTION,
+      images: [ogImageUrl],
     },
   }
 }

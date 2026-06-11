@@ -20,3 +20,15 @@ export function getOgTitle(promptText: string): string {
 
 export const OG_DESCRIPTION =
   "Tap to explore meaningful conversation prompts"
+
+export function getOgImageUrl(promptText: string, categoryTitle: string): string {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ?? DEFAULT_SITE_URL
+
+  const params = new URLSearchParams({
+    text: promptText,
+    category: categoryTitle,
+  })
+
+  return `${base}/api/og?${params.toString()}`
+}
