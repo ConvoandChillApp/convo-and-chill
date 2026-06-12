@@ -1,93 +1,58 @@
-import { ImageResponse } from "@vercel/og"
-import { categorySlug } from "@/lib/category-utils"
+import { ImageResponse } from "next/og"
 
 export const runtime = "edge"
-
-const CATEGORY_EMOJI: Record<string, string> = {
-  dating: "💕",
-  controversial: "🔥",
-  "after-dark": "😈",
-}
-
-function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text
-  return `${text.slice(0, maxLength)}...`
-}
-
-function getCategoryEmoji(category: string): string {
-  return CATEGORY_EMOJI[categorySlug(category)] ?? "✨"
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get("text") ?? "What will you ask tonight?"
-  const category = searchParams.get("category") ?? "Convo & Chill"
-  const displayText = truncateText(text, 80)
-  const emoji = getCategoryEmoji(category)
+  const _category = searchParams.get("category") ?? "Convo & Chill"
+
+  const displayText =
+    text.length > 80 ? `${text.slice(0, 80)}...` : text
 
   return new ImageResponse(
     (
       <div
         style={{
-          width: "1200px",
-          height: "630px",
+          width: "100%",
+          height: "100%",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           background:
-            "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 35%, #C026D3 65%, #EC4899 100%)",
-          position: "relative",
+            "linear-gradient(135deg, #0D0D2B, #4A0E8F, #C026D3, #EC4899)",
           padding: "60px",
-          justifyContent: "space-between",
         }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
+            fontSize: 32,
+            fontWeight: 700,
+            color: "#FFFFFF",
+            marginBottom: "40px",
           }}
         >
-          <div
-            style={{
-              fontWeight: 700,
-              color: "#FFFFFF",
-              fontSize: 32,
-              letterSpacing: "3px",
-            }}
-          >
-            CONVO & CHILL
-          </div>
-          <div
-            style={{
-              color: "#FFFFFF",
-              fontSize: 28,
-            }}
-          >
-            {emoji} {category}
-          </div>
+          CONVO & CHILL
         </div>
 
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
             flex: 1,
-            padding: "40px 0",
-            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
           }}
         >
           <p
             style={{
               margin: 0,
+              fontSize: 56,
               fontWeight: 700,
               color: "#FFFFFF",
-              fontSize: 62,
-              textAlign: "center",
-              lineHeight: 1.3,
               maxWidth: "1000px",
+              lineHeight: 1.3,
             }}
           >
             {displayText}
@@ -96,31 +61,18 @@ export async function GET(request: Request) {
 
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            width: "100%",
+            fontSize: 24,
+            color: "#FFFFFF",
+            marginTop: "40px",
           }}
         >
-          <p
-            style={{
-              margin: 0,
-              color: "#FFFFFF",
-              opacity: 0.7,
-              fontSize: 26,
-            }}
-          >
-            convoandchill.app
-          </p>
+          convoandchill.app
         </div>
       </div>
     ),
     {
       width: 1200,
       height: 630,
-      headers: {
-        "Content-Type": "image/png",
-      },
     }
   )
 }
