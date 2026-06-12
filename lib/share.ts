@@ -17,7 +17,7 @@ export function buildShareMessage(
   promptText: string,
   questionId: number
 ): string {
-  return `${SHARE_HEADLINE}\n\n${promptText}\n\n${getShareUrl(questionId)}`
+  return getShareUrl(questionId)
 }
 
 export function buildShareUrl(questionId: number): string {
@@ -28,9 +28,8 @@ export function getServerShareUrl(questionId: number): string {
   return getShareUrl(questionId)
 }
 
-export function getOgTitle(promptText: string): string {
-  const excerpt = promptText.slice(0, 60)
-  return `${SHARE_HEADLINE} — ${excerpt}`
+export function getOgTitle(_promptText: string): string {
+  return "Convo & Chill"
 }
 
 /** Absolute OG image URL — must use www to avoid redirect for WhatsApp crawlers. */
