@@ -4,7 +4,7 @@
  */
 const OG_URL =
   process.env.OG_TEST_URL ??
-  "https://convoandchill.app/api/og?text=Test+Question&category=Controversial"
+  "https://www.convoandchill.app/api/og?text=Test+Question&category=Controversial"
 
 const res = await fetch(OG_URL, { redirect: "manual" })
 
