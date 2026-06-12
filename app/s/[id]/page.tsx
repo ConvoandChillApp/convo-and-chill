@@ -13,6 +13,8 @@ import {
   OG_DESCRIPTION,
 } from "@/lib/share"
 
+export const revalidate = 0
+
 type PageProps = {
   params: Promise<{ id: string }>
 }
@@ -47,12 +49,12 @@ export async function generateMetadata({
     }
   }
 
+  const ogTitle = getOgTitle(question.promptText)
   const ogImageUrl = getOgImageUrl(
     question.promptText,
-    question.categoryTitle
+    question.categoryTitle,
+    questionId
   )
-
-  const ogTitle = getOgTitle(question.promptText)
 
   return {
     title: ogTitle,
@@ -77,12 +79,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: ogTitle,
       description: OG_DESCRIPTION,
-      images: {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: question.promptText,
-      },
+      images: [ogImageUrl],
     },
   }
 }

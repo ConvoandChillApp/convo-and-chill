@@ -2,6 +2,9 @@ const SHARE_SITE_URL = "https://convoandchill.app"
 
 export const SHARE_HEADLINE = "Question For You 👀"
 
+export const OG_DESCRIPTION =
+  "Tap to answer this question on Convo & Chill"
+
 /** Share link shown in WhatsApp — always bare domain, no www. */
 export function getShareUrl(questionId: number): string {
   return `${SHARE_SITE_URL}/s/${questionId}`
@@ -23,24 +26,24 @@ export function getServerShareUrl(questionId: number): string {
 }
 
 export function getOgTitle(promptText: string): string {
-  const excerpt =
-    promptText.length > 60 ? `${promptText.slice(0, 60)}...` : promptText
-
-  return `Convo & Chill — ${excerpt}`
+  const excerpt = promptText.slice(0, 60)
+  return `${SHARE_HEADLINE} — ${excerpt}`
 }
 
-export const OG_DESCRIPTION =
-  "Tap to explore meaningful conversation prompts"
-
-/** Absolute OG image URL for WhatsApp large card previews. */
+/** Absolute OG image URL — WhatsApp requires https:// with encoded query params. */
 export function getOgImageUrl(
   promptText: string,
-  categoryTitle: string
+  categoryTitle: string,
+  questionId?: number
 ): string {
   const params = new URLSearchParams({
     text: promptText,
     category: categoryTitle,
   })
+
+  if (questionId != null) {
+    params.set("id", String(questionId))
+  }
 
   return `${SHARE_SITE_URL}/api/og?${params.toString()}`
 }

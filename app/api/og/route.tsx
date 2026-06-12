@@ -29,46 +29,65 @@ export async function GET(request: Request) {
     (
       <div
         style={{
-          background:
-            "linear-gradient(to top right, #0D0D2B 0%, #4A0E8F 40%, #C026D3 70%, #EC4899 100%)",
-          width: "100%",
-          height: "100%",
+          width: "1200px",
+          height: "630px",
           display: "flex",
           flexDirection: "column",
+          background:
+            "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 35%, #C026D3 65%, #EC4899 100%)",
+          position: "relative",
           padding: "60px",
+          justifyContent: "space-between",
         }}
       >
         <div
           style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
             width: "100%",
-            fontSize: 36,
-            fontWeight: 700,
-            color: "#FFFFFF",
-            textAlign: "center",
-            letterSpacing: "0.05em",
           }}
         >
-          CONVO & CHILL
+          <div
+            style={{
+              fontWeight: 700,
+              color: "#FFFFFF",
+              fontSize: 32,
+              letterSpacing: "3px",
+            }}
+          >
+            CONVO & CHILL
+          </div>
+          <div
+            style={{
+              color: "#FFFFFF",
+              fontSize: 28,
+            }}
+          >
+            {emoji} {category}
+          </div>
         </div>
 
         <div
           style={{
             display: "flex",
-            flex: 1,
-            alignItems: "center",
             justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+            padding: "40px 0",
             width: "100%",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: 64,
               fontWeight: 700,
               color: "#FFFFFF",
+              fontSize: 62,
               textAlign: "center",
-              lineHeight: 1.2,
-              maxWidth: "1080px",
+              lineHeight: 1.3,
+              maxWidth: "1000px",
             }}
           >
             {displayText}
@@ -78,26 +97,17 @@ export async function GET(request: Request) {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
+            justifyContent: "flex-end",
+            alignItems: "center",
             width: "100%",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: 32,
-              fontWeight: 600,
               color: "#FFFFFF",
-            }}
-          >
-            {emoji} {category}
-          </p>
-          <p
-            style={{
-              margin: 0,
-              fontSize: 28,
-              color: "rgba(255, 255, 255, 0.6)",
+              opacity: 0.7,
+              fontSize: 26,
             }}
           >
             convoandchill.app
@@ -108,6 +118,9 @@ export async function GET(request: Request) {
     {
       width: 1200,
       height: 630,
+      headers: {
+        "Content-Type": "image/png",
+      },
     }
   )
 }
