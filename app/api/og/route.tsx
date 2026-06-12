@@ -25,17 +25,16 @@ export async function GET(request: Request) {
           padding: "60px",
         }}
       >
-        <img
-          src="https://convoandchill.app/logo.png"
-          height={40}
+        <div
           style={{
-            height: 40,
-            width: "auto",
+            fontSize: 32,
+            fontWeight: 700,
+            color: "#FFFFFF",
             marginBottom: "40px",
-            objectFit: "contain",
           }}
-          alt="Convo & Chill"
-        />
+        >
+          CONVO & CHILL
+        </div>
 
         <div
           style={{
