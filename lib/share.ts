@@ -1,8 +1,5 @@
 const SHARE_SITE_URL = "https://convoandchill.app"
 
-/** www subdomain — OG image crawlers (WhatsApp) won't follow 308 redirects from bare domain. */
-const OG_SITE_URL = "https://www.convoandchill.app"
-
 export const SHARE_HEADLINE = "Question For You 👀"
 
 /** Share link shown in WhatsApp — always bare domain, no www. */
@@ -35,7 +32,7 @@ export function getOgTitle(promptText: string): string {
 export const OG_DESCRIPTION =
   "Tap to explore meaningful conversation prompts"
 
-/** Absolute OG image URL — must use www to avoid redirect for crawlers. */
+/** Absolute OG image URL for WhatsApp large card previews. */
 export function getOgImageUrl(
   promptText: string,
   categoryTitle: string
@@ -45,5 +42,5 @@ export function getOgImageUrl(
     category: categoryTitle,
   })
 
-  return `${OG_SITE_URL}/api/og?${params.toString()}`
+  return `${SHARE_SITE_URL}/api/og?${params.toString()}`
 }

@@ -52,20 +52,20 @@ export async function generateMetadata({
     question.categoryTitle
   )
 
+  const ogTitle = getOgTitle(question.promptText)
+
   return {
-    title: getOgTitle(question.promptText),
+    title: ogTitle,
     description: OG_DESCRIPTION,
     openGraph: {
-      title: getOgTitle(question.promptText),
+      title: ogTitle,
       description: OG_DESCRIPTION,
       url,
       siteName: "Convo & Chill",
       type: "website",
-      locale: "en_US",
       images: [
         {
           url: ogImageUrl,
-          secureUrl: ogImageUrl,
           width: 1200,
           height: 630,
           type: "image/png",
@@ -75,9 +75,14 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: getOgTitle(question.promptText),
+      title: ogTitle,
       description: OG_DESCRIPTION,
-      images: [ogImageUrl],
+      images: {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: question.promptText,
+      },
     },
   }
 }

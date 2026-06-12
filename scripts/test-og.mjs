@@ -4,14 +4,14 @@
  */
 const OG_URL =
   process.env.OG_TEST_URL ??
-  "https://www.convoandchill.app/api/og?text=Test+Question&category=Controversial"
+  "https://convoandchill.app/api/og?text=Test+Question&category=Controversial"
 
 const res = await fetch(OG_URL, { redirect: "manual" })
 
 if (res.status >= 300 && res.status < 400) {
   const location = res.headers.get("location")
   console.error(`FAIL: OG URL redirects (${res.status}) → ${location}`)
-  console.error("Use https://www.convoandchill.app — WhatsApp will not follow redirects for og:image.")
+  console.error("OG image URL must not redirect — use the canonical domain that returns 200 directly.")
   process.exit(1)
 }
 

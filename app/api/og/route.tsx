@@ -22,7 +22,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get("text") ?? "What will you ask tonight?"
   const category = searchParams.get("category") ?? "Convo & Chill"
-  const displayText = truncateText(text, 100)
+  const displayText = truncateText(text, 80)
   const emoji = getCategoryEmoji(category)
 
   return new ImageResponse(
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
       <div
         style={{
           background:
-            "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 40%, #C026D3 70%, #EC4899 100%)",
+            "linear-gradient(to top right, #0D0D2B 0%, #4A0E8F 40%, #C026D3 70%, #EC4899 100%)",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -40,9 +40,11 @@ export async function GET(request: Request) {
       >
         <div
           style={{
+            width: "100%",
             fontSize: 36,
             fontWeight: 700,
             color: "#FFFFFF",
+            textAlign: "center",
             letterSpacing: "0.05em",
           }}
         >
@@ -55,18 +57,18 @@ export async function GET(request: Request) {
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
-            padding: "24px 0",
+            width: "100%",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: 52,
+              fontSize: 64,
               fontWeight: 700,
               color: "#FFFFFF",
               textAlign: "center",
-              lineHeight: 1.25,
-              maxWidth: "1000px",
+              lineHeight: 1.2,
+              maxWidth: "1080px",
             }}
           >
             {displayText}
@@ -84,7 +86,7 @@ export async function GET(request: Request) {
           <p
             style={{
               margin: 0,
-              fontSize: 28,
+              fontSize: 32,
               fontWeight: 600,
               color: "#FFFFFF",
             }}
@@ -94,7 +96,7 @@ export async function GET(request: Request) {
           <p
             style={{
               margin: 0,
-              fontSize: 22,
+              fontSize: 28,
               color: "rgba(255, 255, 255, 0.6)",
             }}
           >
