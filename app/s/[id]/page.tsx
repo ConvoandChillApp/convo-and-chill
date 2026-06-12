@@ -8,7 +8,6 @@ import { fetchFollowUpQuestions, fetchQuestionById } from "@/lib/questions"
 import { recordShareEvent } from "@/lib/share-analytics"
 import {
   getOgImageUrl,
-  getOgTitle,
   getServerShareUrl,
   OG_DESCRIPTION,
 } from "@/lib/share"
@@ -49,7 +48,6 @@ export async function generateMetadata({
     }
   }
 
-  const ogTitle = getOgTitle(question.promptText)
   const ogImageUrl = getOgImageUrl(
     question.promptText,
     question.categoryTitle,
@@ -57,11 +55,11 @@ export async function generateMetadata({
   )
 
   return {
-    title: ogTitle,
+    title: "Question For You 👀 — Convo & Chill",
     description: OG_DESCRIPTION,
     openGraph: {
-      title: ogTitle,
-      description: OG_DESCRIPTION,
+      title: "Question For You 👀",
+      description: "Tap to answer →",
       url,
       siteName: "Convo & Chill",
       type: "website",
@@ -77,8 +75,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: ogTitle,
-      description: OG_DESCRIPTION,
+      title: "Question For You 👀",
+      description: "Tap to answer →",
       images: [ogImageUrl],
     },
   }
