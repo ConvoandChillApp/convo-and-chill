@@ -1,14 +1,28 @@
-const DEFAULT_SITE_URL = "https://convoandchill.app"
+const SHARE_SITE_URL = "https://convoandchill.app"
 
-export function buildShareUrl(origin: string, questionId: number): string {
-  return `${origin.replace(/\/$/, "")}/s/${questionId}`
+/** www subdomain — OG image crawlers (WhatsApp) won't follow 308 redirects from bare domain. */
+const OG_SITE_URL = "https://www.convoandchill.app"
+
+export const SHARE_HEADLINE = "Question For You 👀"
+
+/** Share link shown in WhatsApp — always bare domain, no www. */
+export function getShareUrl(questionId: number): string {
+  return `${SHARE_SITE_URL}/s/${questionId}`
+}
+
+export function buildShareMessage(
+  promptText: string,
+  questionId: number
+): string {
+  return `${SHARE_HEADLINE}\n\n${promptText}\n\n${getShareUrl(questionId)}`
+}
+
+export function buildShareUrl(questionId: number): string {
+  return getShareUrl(questionId)
 }
 
 export function getServerShareUrl(questionId: number): string {
-  const base =
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ?? DEFAULT_SITE_URL
-
-  return `${base}/s/${questionId}`
+  return getShareUrl(questionId)
 }
 
 export function getOgTitle(promptText: string): string {
@@ -21,14 +35,15 @@ export function getOgTitle(promptText: string): string {
 export const OG_DESCRIPTION =
   "Tap to explore meaningful conversation prompts"
 
-export function getOgImageUrl(promptText: string, categoryTitle: string): string {
-  const base =
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ?? DEFAULT_SITE_URL
-
+/** Absolute OG image URL — must use www to avoid redirect for crawlers. */
+export function getOgImageUrl(
+  promptText: string,
+  categoryTitle: string
+): string {
   const params = new URLSearchParams({
     text: promptText,
     category: categoryTitle,
   })
 
-  return `${base}/api/og?${params.toString()}`
+  return `${OG_SITE_URL}/api/og?${params.toString()}`
 }

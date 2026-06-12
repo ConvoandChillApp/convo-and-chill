@@ -2,7 +2,8 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { FollowUpPromptCard } from "@/components/follow-up-prompt-card"
-import { QuestionCard } from "@/components/question-card"
+import { Header } from "@/components/header"
+import { MainCard } from "@/components/main-card"
 import { fetchFollowUpQuestions, fetchQuestionById } from "@/lib/questions"
 import { recordShareEvent } from "@/lib/share-analytics"
 import {
@@ -64,8 +65,10 @@ export async function generateMetadata({
       images: [
         {
           url: ogImageUrl,
+          secureUrl: ogImageUrl,
           width: 1200,
           height: 630,
+          type: "image/png",
           alt: question.promptText,
         },
       ],
@@ -102,57 +105,49 @@ export default async function SharedQuestionPage({ params }: PageProps) {
   )
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0d0d0d]">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-0 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,oklch(0.4_0.18_300_/_0.35),transparent_65%)] blur-2xl"
-      />
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 bg-[#0A0A0F] px-4 pb-10 pt-6">
+      <Header />
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-6">
-        <header className="flex items-center justify-center">
-          <h1 className="text-lg font-bold tracking-tight text-white">
-            CONVO &amp; CHILL
-          </h1>
-        </header>
+      <div className="flex flex-1 flex-col">
+        <MainCard
+          question={{
+            text: question.promptText,
+            category: question.categoryTitle,
+          }}
+          animationKey={question.id}
+        />
 
-        <div className="mt-12 flex flex-1 flex-col">
-          <QuestionCard
-            category={question.categoryTitle}
-            question={question.promptText}
-          />
-
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/"
-              className="rounded-full bg-gradient-to-br from-[oklch(0.62_0.27_330)] to-[oklch(0.55_0.24_295)] px-8 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-6px_oklch(0.62_0.27_330_/_0.7)] transition-transform hover:scale-105"
-            >
-              Explore more prompts →
-            </Link>
-          </div>
-
-          {followUps.length > 0 && (
-            <div className="mt-10">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-white/50">
-                More prompts
-              </p>
-              <div className="flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {followUps.map((followUp) => (
-                  <Link
-                    key={followUp.id}
-                    href={`/s/${followUp.id}`}
-                    className="shrink-0 transition-transform hover:scale-[1.02]"
-                  >
-                    <FollowUpPromptCard
-                      category={followUp.categoryTitle}
-                      question={followUp.promptText}
-                    />
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="mt-6 flex justify-center">
+          <Link
+            href="/"
+            className="rounded-full bg-gradient-to-br from-[oklch(0.62_0.27_330)] to-[oklch(0.55_0.24_295)] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_30px_-6px_oklch(0.62_0.27_330_/_0.7)] transition-transform hover:scale-105"
+          >
+            Explore more prompts →
+          </Link>
         </div>
-      </main>
-    </div>
+
+        {followUps.length > 0 && (
+          <div className="mt-10">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-white/50">
+              More prompts
+            </p>
+            <div className="flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {followUps.map((followUp) => (
+                <Link
+                  key={followUp.id}
+                  href={`/s/${followUp.id}`}
+                  className="shrink-0 transition-transform hover:scale-[1.02]"
+                >
+                  <FollowUpPromptCard
+                    category={followUp.categoryTitle}
+                    question={followUp.promptText}
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
   )
 }

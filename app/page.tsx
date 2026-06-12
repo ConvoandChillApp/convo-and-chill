@@ -13,7 +13,7 @@ import {
 import { useCategories } from "@/hooks/use-categories"
 import { useQuestions } from "@/hooks/use-questions"
 import { categorySlug } from "@/lib/category-utils"
-import { buildShareUrl } from "@/lib/share"
+import { buildShareMessage } from "@/lib/share"
 import { incrementShareCount } from "@/lib/share-analytics"
 
 export default function HomePage() {
@@ -87,27 +87,23 @@ export default function HomePage() {
   async function share() {
     if (!current) return
 
-    const url = buildShareUrl(window.location.origin, current.id)
+    const message = buildShareMessage(current.promptText, current.id)
 
     void incrementShareCount(current.id)
 
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: "Convo & Chill",
-          text: current.promptText,
-          url,
-        })
+        await navigator.share({ text: message })
         return
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return
-        await navigator.clipboard.writeText(url)
+        await navigator.clipboard.writeText(message)
         showCopiedToast()
       }
       return
     }
 
-    await navigator.clipboard.writeText(url)
+    await navigator.clipboard.writeText(message)
     showCopiedToast()
   }
 
@@ -153,7 +149,7 @@ export default function HomePage() {
       <Progress current={currentNumber} total={total} />
 
       <BottomNav />
-      <Toast message="Link copied!" visible={toastVisible} />
+      <Toast message="Copied!" visible={toastVisible} />
     </main>
   )
 }

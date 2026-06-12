@@ -9,10 +9,6 @@ const CATEGORY_EMOJI: Record<string, string> = {
   "after-dark": "😈",
 }
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ??
-  "https://convoandchill.app"
-
 function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return `${text.slice(0, maxLength)}...`
@@ -33,103 +29,77 @@ export async function GET(request: Request) {
     (
       <div
         style={{
+          background:
+            "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 40%, #C026D3 70%, #EC4899 100%)",
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          position: "relative",
-          backgroundColor: "#0A0A0F",
-          fontFamily: "system-ui, sans-serif",
+          padding: "60px",
         }}
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 45%, #C026D3 75%, #EC4899 100%)",
-            opacity: 0.9,
+            fontSize: 36,
+            fontWeight: 700,
+            color: "#FFFFFF",
+            letterSpacing: "0.05em",
           }}
-        />
+        >
+          CONVO & CHILL
+        </div>
 
         <div
           style={{
-            position: "relative",
-            zIndex: 1,
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            width: "100%",
-            height: "100%",
-            padding: "56px 64px",
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px 0",
           }}
         >
-          <div
+          <p
             style={{
-              display: "flex",
-              alignItems: "center",
+              margin: 0,
+              fontSize: 52,
+              fontWeight: 700,
+              color: "#FFFFFF",
+              textAlign: "center",
+              lineHeight: 1.25,
+              maxWidth: "1000px",
             }}
           >
-            <img
-              src={`${SITE_URL}/logo.png`}
-              alt="Convo & Chill"
-              height={40}
-              style={{ height: 40, objectFit: "contain" }}
-            />
-          </div>
+            {displayText}
+          </p>
+        </div>
 
-          <div
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            width: "100%",
+          }}
+        >
+          <p
             style={{
-              display: "flex",
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "24px 0",
+              margin: 0,
+              fontSize: 28,
+              fontWeight: 600,
+              color: "#FFFFFF",
             }}
           >
-            <p
-              style={{
-                margin: 0,
-                fontSize: 52,
-                fontWeight: 700,
-                color: "#FFFFFF",
-                textAlign: "center",
-                lineHeight: 1.25,
-                maxWidth: "1000px",
-              }}
-            >
-              {displayText}
-            </p>
-          </div>
-
-          <div
+            {emoji} {category}
+          </p>
+          <p
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              width: "100%",
+              margin: 0,
+              fontSize: 22,
+              color: "rgba(255, 255, 255, 0.6)",
             }}
           >
-            <p
-              style={{
-                margin: 0,
-                fontSize: 28,
-                fontWeight: 600,
-                color: "#FFFFFF",
-              }}
-            >
-              {emoji} {category}
-            </p>
-            <p
-              style={{
-                margin: 0,
-                fontSize: 22,
-                color: "rgba(255, 255, 255, 0.6)",
-              }}
-            >
-              convoandchill.app
-            </p>
-          </div>
+            convoandchill.app
+          </p>
         </div>
       </div>
     ),

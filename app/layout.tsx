@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://convoandchill.app"),
+  metadataBase: new URL("https://www.convoandchill.app"),
   title: "Convo & Chill",
   description: "Conversation starters for every vibe",
 };
