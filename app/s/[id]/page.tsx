@@ -59,7 +59,7 @@ export async function generateMetadata({
     description: OG_DESCRIPTION,
     openGraph: {
       title: "Question For You 👀",
-      description: "Tap to answer →",
+      description: "Tap to view question card →",
       url,
       siteName: "Convo & Chill",
       type: "website",
