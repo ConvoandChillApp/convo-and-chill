@@ -11,6 +11,12 @@ type CategoryStyle = {
 }
 
 const CATEGORY_STYLES: Record<string, CategoryStyle> = {
+  "getting-to-know": {
+    emoji: "🤝",
+    border: "border-yellow-500",
+    glow: "shadow-[0_0_10px_rgba(234,179,8,0.35)]",
+    activeGlow: "shadow-[0_0_22px_rgba(234,179,8,0.85)]",
+  },
   dating: {
     emoji: "💕",
     border: "border-pink-500",
