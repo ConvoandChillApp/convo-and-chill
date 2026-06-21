@@ -10,6 +10,7 @@ export type MainCardQuestion = {
 }
 
 const CATEGORY_EMOJI: Record<string, string> = {
+  "getting-to-know-someone": "🤝",
   dating: "💕",
   controversial: "🔥",
   "after-dark": "😈",
