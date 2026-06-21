@@ -5,7 +5,7 @@ import Image from "next/image"
 import styles from "./SplashScreen.module.css"
 
 const SPLASH_SESSION_KEY = "convo-splash-shown"
-const VISIBLE_MS = 3000
+const VISIBLE_MS = 1000
 const FADE_OUT_MS = 500
 
 export function SplashScreen() {
