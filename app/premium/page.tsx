@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Check, Crown, Sparkles } from "lucide-react"
 import { BottomNav } from "@/components"
 
@@ -40,13 +41,13 @@ export default function PremiumPage() {
           </ul>
         </div>
 
-        <button
-          type="button"
+        <Link
+          href="/premium/subscriptions"
           className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-600 px-6 py-4 text-base font-semibold text-white shadow-[0_8px_28px_-6px_rgba(236,72,153,0.75)] transition-transform hover:scale-[1.02]"
         >
           <Sparkles className="size-5" />
           Start CONVO+ — $59 / year
-        </button>
+        </Link>
 
         <p className="mt-3 text-xs font-medium text-white/40">
           Less than $5/month · Billed annually
