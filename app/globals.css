@@ -27,6 +27,18 @@
   animation: card-enter 200ms ease-out;
 }
 
+html.splash-active #app-root {
+  visibility: hidden;
+}
+
+html.splash-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: #0a0a0c;
+}
+
 html {
   background-color: #0a0a0f;
   color: #ededed;
