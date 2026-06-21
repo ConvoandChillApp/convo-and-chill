@@ -1,18 +1,23 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import Image from "next/image"
 import styles from "./SplashScreen.module.css"
 
-const SPLASH_SESSION_KEY = "convo-splash-shown"
+export const SPLASH_SESSION_KEY = "convo-splash-shown"
 const VISIBLE_MS = 2000
 const FADE_OUT_MS = 500
+
+function clearSplashLock() {
+  document.documentElement.classList.remove("splash-active")
+}
 
 export function SplashScreen() {
   const [phase, setPhase] = useState("hidden")
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (sessionStorage.getItem(SPLASH_SESSION_KEY)) {
+      clearSplashLock()
       return
     }
 
@@ -25,6 +30,7 @@ export function SplashScreen() {
 
     const unmountTimer = setTimeout(() => {
       setPhase("hidden")
+      clearSplashLock()
     }, VISIBLE_MS + FADE_OUT_MS)
 
     return () => {

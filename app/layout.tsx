@@ -29,8 +29,17 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-[#0A0A0F] text-white`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(!sessionStorage.getItem("convo-splash-shown")){document.documentElement.classList.add("splash-active")}}catch(e){document.documentElement.classList.add("splash-active")}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#0A0A0F] text-white">
-        {children}
+        <div id="app-root" className="flex min-h-full flex-1 flex-col">
+          {children}
+        </div>
         <SplashScreen />
       </body>
     </html>
