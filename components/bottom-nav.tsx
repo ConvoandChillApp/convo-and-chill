@@ -5,7 +5,18 @@ import { Crown, Home, ShoppingBasket, User } from "lucide-react"
 
 const SHOP_URL = "https://linktr.ee/convoandchill"
 
-const TABS = [
+type TabConfig = {
+  id: string
+  label: string
+  icon: typeof Home
+  href: string | null
+  activeColor: string
+  accentColor: string
+  alwaysAccent?: boolean
+  external?: boolean
+}
+
+const TABS: TabConfig[] = [
   {
     id: "home",
     label: "Home",
@@ -41,7 +52,7 @@ const TABS = [
     activeColor: "text-white",
     accentColor: "bg-white shadow-[0_0_8px_rgba(255,255,255,0.4)]",
   },
-] as const
+]
 
 function getActiveTab(pathname: string): string {
   if (pathname.startsWith("/premium")) return "premium"
