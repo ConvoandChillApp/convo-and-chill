@@ -46,7 +46,7 @@ const TABS: TabConfig[] = [
   },
   {
     id: "me",
-    label: "Me",
+    label: "Profile",
     icon: User,
     href: null,
     activeColor: "text-white",
