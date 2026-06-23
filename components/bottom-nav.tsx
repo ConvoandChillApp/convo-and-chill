@@ -3,8 +3,6 @@
 import { usePathname, useRouter } from "next/navigation"
 import { Crown, Home, ShoppingBasket, User } from "lucide-react"
 
-const SHOP_URL = "https://linktr.ee/convoandchill"
-
 type TabConfig = {
   id: string
   label: string
@@ -38,11 +36,10 @@ const TABS: TabConfig[] = [
     id: "shop",
     label: "Shop",
     icon: ShoppingBasket,
-    href: SHOP_URL,
+    href: "/shop",
     activeColor: "text-emerald-400",
     accentColor: "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]",
     alwaysAccent: true,
-    external: true,
   },
   {
     id: "me",
@@ -56,6 +53,7 @@ const TABS: TabConfig[] = [
 
 function getActiveTab(pathname: string): string {
   if (pathname.startsWith("/premium")) return "premium"
+  if (pathname.startsWith("/shop")) return "shop"
   if (pathname.startsWith("/me")) return "me"
   return "home"
 }
