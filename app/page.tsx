@@ -93,7 +93,8 @@ export default function HomePage() {
 
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: "Question For You 👀" })
+        // Plain URL text keeps WhatsApp large-image previews (url+title → compact card).
+        await navigator.share({ text: url })
         return
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return
