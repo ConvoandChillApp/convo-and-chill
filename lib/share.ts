@@ -30,22 +30,9 @@ export function getServerShareUrl(questionId: number): string {
   return getShareUrl(questionId)
 }
 
-/** Absolute OG image URL — bare domain returns 200 directly (www 308-redirects). */
-export function getOgImageUrl(
-  promptText: string,
-  categoryTitle: string,
-  questionId?: number
-): string {
-  const params = new URLSearchParams({
-    text: promptText,
-    category: categoryTitle,
-  })
-
-  if (questionId != null) {
-    params.set("id", String(questionId))
-  }
-
-  return `${SHARE_SITE_URL}/api/og?${params.toString()}`
+/** Short OG image URL — WhatsApp crawlers prefer stable, compact image URLs. */
+export function getOgImageUrl(questionId: number): string {
+  return `${SHARE_SITE_URL}/api/og?id=${questionId}`
 }
 
 type ShareableQuestion = {
@@ -59,14 +46,11 @@ export function buildSharedQuestionMetadata(
   question: ShareableQuestion
 ): Metadata {
   const url = getShareUrl(question.id)
-  const ogImageUrl = getOgImageUrl(
-    question.promptText,
-    question.categoryTitle,
-    question.id
-  )
+  const ogImageUrl = getOgImageUrl(question.id)
 
   const image = {
     url: ogImageUrl,
+    secureUrl: ogImageUrl,
     width: OG_IMAGE_WIDTH,
     height: OG_IMAGE_HEIGHT,
     type: "image/png" as const,
