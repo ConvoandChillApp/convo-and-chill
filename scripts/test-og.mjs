@@ -1,10 +1,10 @@
 /**
  * Verifies the OG image endpoint returns a 1200×630 PNG without redirects.
- * Uses www subdomain — bare convoandchill.app 308-redirects and breaks WhatsApp crawlers.
+ * Uses bare convoandchill.app — www 308-redirects and can break WhatsApp crawlers.
  */
 const OG_URL =
   process.env.OG_TEST_URL ??
-  "https://www.convoandchill.app/api/og?text=Test+Question&category=Controversial"
+  "https://convoandchill.app/api/og?text=Test+Question&category=Controversial&id=1"
 
 const res = await fetch(OG_URL, { redirect: "manual" })
 

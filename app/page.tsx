@@ -87,23 +87,23 @@ export default function HomePage() {
   async function share() {
     if (!current) return
 
-    const message = buildShareMessage(current.promptText, current.id)
+    const url = buildShareMessage(current.promptText, current.id)
 
     void incrementShareCount(current.id)
 
     if (navigator.share) {
       try {
-        await navigator.share({ text: message })
+        await navigator.share({ url, title: "Question For You 👀" })
         return
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return
-        await navigator.clipboard.writeText(message)
+        await navigator.clipboard.writeText(url)
         showCopiedToast()
       }
       return
     }
 
-    await navigator.clipboard.writeText(message)
+    await navigator.clipboard.writeText(url)
     showCopiedToast()
   }
 

@@ -7,8 +7,8 @@ import { MainCard } from "@/components/main-card"
 import { fetchFollowUpQuestions, fetchQuestionById } from "@/lib/questions"
 import { recordShareEvent } from "@/lib/share-analytics"
 import {
-  getOgImageUrl,
-  getServerShareUrl,
+  buildSharedQuestionMetadata,
+  buildShareNotFoundMetadata,
   OG_DESCRIPTION,
 } from "@/lib/share"
 
@@ -32,54 +32,16 @@ export async function generateMetadata({
   }
 
   const question = await fetchQuestionById(questionId)
-  const url = getServerShareUrl(questionId)
 
   if (!question) {
-    return {
-      title: "Question not found | Convo & Chill",
-      description: OG_DESCRIPTION,
-      openGraph: {
-        title: "Convo & Chill",
-        description: OG_DESCRIPTION,
-        url,
-        siteName: "Convo & Chill",
-        type: "website",
-      },
-    }
+    return buildShareNotFoundMetadata(questionId)
   }
 
-  const ogImageUrl = getOgImageUrl(
-    question.promptText,
-    question.categoryTitle,
-    questionId
-  )
-
-  return {
-    title: "Question For You 👀 — Convo & Chill",
-    description: OG_DESCRIPTION,
-    openGraph: {
-      title: "Question For You 👀",
-      description: "Tap to view question card →",
-      url,
-      siteName: "Convo & Chill",
-      type: "website",
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          type: "image/png",
-          alt: question.promptText,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Question For You 👀",
-      description: "Tap to answer →",
-      images: [ogImageUrl],
-    },
-  }
+  return buildSharedQuestionMetadata({
+    id: question.id,
+    promptText: question.promptText,
+    categoryTitle: question.categoryTitle,
+  })
 }
 
 export default async function SharedQuestionPage({ params }: PageProps) {

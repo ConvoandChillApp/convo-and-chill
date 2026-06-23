@@ -2,13 +2,18 @@ import { ImageResponse } from "next/og"
 
 export const runtime = "edge"
 
+const OG_WIDTH = 1200
+const OG_HEIGHT = 630
+
+function truncateQuestion(text: string, maxLength = 120): string {
+  if (text.length <= maxLength) return text
+  return `${text.slice(0, maxLength - 1).trimEnd()}…`
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get("text") ?? "What will you ask tonight?"
-  const _category = searchParams.get("category") ?? "Convo & Chill"
-
-  const displayText =
-    text.length > 80 ? `${text.slice(0, 80)}...` : text
+  const displayText = truncateQuestion(text)
 
   return new ImageResponse(
     (
@@ -19,18 +24,19 @@ export async function GET(request: Request) {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
           background:
-            "linear-gradient(135deg, #0D0D2B, #4A0E8F, #C026D3, #EC4899)",
-          padding: "60px",
+            "linear-gradient(135deg, #0D0D2B 0%, #4A0E8F 45%, #C026D3 75%, #EC4899 100%)",
+          padding: "56px 64px",
         }}
       >
         <div
           style={{
-            fontSize: 32,
+            fontSize: 28,
             fontWeight: 700,
+            letterSpacing: "0.14em",
             color: "#FFFFFF",
-            marginBottom: "40px",
+            textTransform: "uppercase",
           }}
         >
           CONVO & CHILL
@@ -38,21 +44,22 @@ export async function GET(request: Request) {
 
         <div
           style={{
-            flex: 1,
             display: "flex",
+            flex: 1,
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
+            padding: "24px 0",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: 56,
+              fontSize: displayText.length > 70 ? 48 : 56,
               fontWeight: 700,
               color: "#FFFFFF",
-              maxWidth: "1000px",
-              lineHeight: 1.3,
+              maxWidth: "980px",
+              lineHeight: 1.25,
             }}
           >
             {displayText}
@@ -61,9 +68,9 @@ export async function GET(request: Request) {
 
         <div
           style={{
-            fontSize: 24,
-            color: "#FFFFFF",
-            marginTop: "40px",
+            fontSize: 22,
+            fontWeight: 500,
+            color: "rgba(255, 255, 255, 0.92)",
           }}
         >
           convoandchill.app
@@ -71,8 +78,11 @@ export async function GET(request: Request) {
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      width: OG_WIDTH,
+      height: OG_HEIGHT,
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
     }
   )
 }
