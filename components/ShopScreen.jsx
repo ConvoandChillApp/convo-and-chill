@@ -9,7 +9,7 @@ import {
   ShoppingBag,
   Smartphone,
 } from "lucide-react"
-import { BottomNav } from "@/components"
+import { BottomNav, Header } from "@/components"
 import styles from "./ShopScreen.module.css"
 
 const AMAZON_URL = "https://www.amazon.com/dp/B09RG1ZJM1"
@@ -26,16 +26,19 @@ const FEATURES = [
     icon: MessageCircleHeart,
     title: "Deeper than small talk",
     subtitle: "Questions designed to spark real connection",
+    accent: "rose",
   },
   {
     icon: PhoneOff,
     title: "Phone-free connection",
     subtitle: "Put the screens down, stay present",
+    accent: "gold",
   },
   {
     icon: Smartphone,
     title: "Pairs with the app",
     subtitle: "150+ more questions in your pocket",
+    accent: "rose",
   },
 ]
 
@@ -45,15 +48,12 @@ export function ShopScreen() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <header className={styles.header}>
-          <div>
-            <p className={styles.brandEyebrow}>Convo and</p>
-            <p className={styles.brandName}>Chill</p>
-          </div>
+        <div className={styles.topBar}>
+          <Header />
           <span className={styles.headerLabel}>Shop</span>
-        </header>
+        </div>
 
-        <div className={styles.hero}>
+        <section className={styles.hero}>
           <Image
             src="/card-game.jpg"
             alt="Convo and Chill After Dark card game"
@@ -62,16 +62,18 @@ export function ShopScreen() {
             sizes="(max-width: 28rem) 100vw, 28rem"
             className={styles.heroImage}
           />
+          <div className={styles.heroOverlay} aria-hidden="true" />
+          <div className={styles.heroGlow} aria-hidden="true" />
           <span className={`${styles.badge} ${styles.badgeAfterDark}`}>
             After Dark
           </span>
           <span className={`${styles.badge} ${styles.badgeAge}`}>18+</span>
-        </div>
+        </section>
 
-        <div className={styles.contentCard}>
+        <article className={styles.contentCard}>
           <div className={styles.titleBlock}>
             <h1 className={styles.productName}>Convo and Chill</h1>
-            <p className={styles.productVariant}>After Dark</p>
+            <p className={styles.productVariant}>After Dark Edition</p>
           </div>
 
           <p className={styles.tagline}>
@@ -88,9 +90,13 @@ export function ShopScreen() {
           </div>
 
           <div className={styles.features}>
-            {FEATURES.map(({ icon: Icon, title, subtitle }) => (
+            {FEATURES.map(({ icon: Icon, title, subtitle, accent }) => (
               <div key={title} className={styles.feature}>
-                <span className={styles.featureIcon}>
+                <span
+                  className={`${styles.featureIcon} ${
+                    accent === "gold" ? styles.featureIconGold : styles.featureIconRose
+                  }`}
+                >
                   <Icon className="size-4" aria-hidden="true" />
                 </span>
                 <div>
@@ -100,8 +106,10 @@ export function ShopScreen() {
               </div>
             ))}
           </div>
-        </div>
+        </article>
+      </main>
 
+      <div className={styles.buyBar}>
         <Link
           href={AMAZON_URL}
           target="_blank"
@@ -112,7 +120,7 @@ export function ShopScreen() {
           Buy on Amazon
         </Link>
         <p className={styles.finePrint}>Opens in Amazon · Ships worldwide</p>
-      </main>
+      </div>
 
       <BottomNav
         active="shop"
