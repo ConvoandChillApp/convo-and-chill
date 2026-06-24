@@ -45,7 +45,7 @@ const TABS: TabConfig[] = [
     id: "me",
     label: "Profile",
     icon: User,
-    href: null,
+    href: "/me",
     activeColor: "text-white",
     accentColor: "bg-white shadow-[0_0_8px_rgba(255,255,255,0.4)]",
   },
