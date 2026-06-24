@@ -31,9 +31,9 @@ const CATEGORY_STYLES: Record<string, CategoryStyle> = {
   },
   "after-dark": {
     emoji: "😈",
-    border: "border-purple-500",
-    glow: "shadow-[0_0_10px_rgba(168,85,247,0.35)]",
-    activeGlow: "shadow-[0_0_22px_rgba(168,85,247,0.85)]",
+    border: "border-red-500",
+    glow: "shadow-[0_0_10px_rgba(239,68,68,0.35)]",
+    activeGlow: "shadow-[0_0_22px_rgba(239,68,68,0.85)]",
   },
 }
 
