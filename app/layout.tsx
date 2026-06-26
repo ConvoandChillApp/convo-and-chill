@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { PostHogProvider } from "@/components/PostHogProvider";
 import { SplashScreen } from "@/components/SplashScreen";
 import "./globals.css";
 
@@ -37,10 +38,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#0A0A0F] text-white">
-        <div id="app-root" className="flex min-h-full flex-1 flex-col">
-          {children}
-        </div>
-        <SplashScreen />
+        <PostHogProvider>
+          <div id="app-root" className="flex min-h-full flex-1 flex-col">
+            {children}
+          </div>
+          <SplashScreen />
+        </PostHogProvider>
       </body>
     </html>
   );
