@@ -122,14 +122,14 @@ export function CategoryGrid({
                 boxShadow: isActive ? card.activeGlow : card.glow,
               }}
             >
-              <div className="flex h-[10.75rem] items-end justify-center px-1.5 pt-2">
+              <div className="flex justify-center px-1.5 pt-2 pb-0">
                 {card.image ? (
                   <Image
                     src={card.image}
                     alt=""
                     width={140}
                     height={140}
-                    className="h-[8.75rem] w-auto max-w-full object-contain object-bottom transition-transform duration-200 group-hover:scale-[1.02]"
+                    className="h-[8.75rem] w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-[1.02]"
                   />
                 ) : (
                   <span className="pb-6 text-5xl leading-none">{card.emoji}</span>
