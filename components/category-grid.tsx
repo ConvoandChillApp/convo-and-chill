@@ -2,74 +2,51 @@
 
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import type { Category } from "@/types/category"
 import { categorySlug } from "@/lib/category-utils"
 
-type CategoryStyle = {
-  displayTitle?: string
-  subtitle?: string
-  image?: string
-  emoji?: string
-  border: string
+type ProductDeckSlug = "controversial" | "expansion" | "after-dark"
+
+type ProductDeckStyle = {
+  slug: ProductDeckSlug
+  displayTitle: string
+  subtitle: string
+  image: string
+  borderColor: string
   glow: string
   activeGlow: string
-  ring: string
 }
 
-const CATEGORY_STYLES: Record<string, CategoryStyle> = {
-  controversial: {
+const PRODUCT_DECKS: ProductDeckStyle[] = [
+  {
+    slug: "controversial",
     displayTitle: "Original Edition",
     subtitle: "99 Controversial Cards",
     image: "/categories/original-edition.png",
-    border: "border-cyan-400/70",
-    ring: "ring-cyan-400/40",
-    glow: "shadow-[0_0_14px_rgba(34,211,238,0.25)]",
-    activeGlow: "shadow-[0_0_28px_rgba(34,211,238,0.55)]",
+    borderColor: "rgba(186, 230, 253, 0.55)",
+    glow: "0 0 18px rgba(186, 230, 253, 0.12)",
+    activeGlow: "0 0 28px rgba(186, 230, 253, 0.35)",
   },
-  expansion: {
+  {
+    slug: "expansion",
     displayTitle: "Expansion Deck",
-    subtitle: "50 Foreplay Cards",
+    subtitle: "50 Controversial Cards",
     image: "/categories/expansion-deck.png",
-    border: "border-blue-400/70",
-    ring: "ring-blue-400/40",
-    glow: "shadow-[0_0_14px_rgba(96,165,250,0.25)]",
-    activeGlow: "shadow-[0_0_28px_rgba(96,165,250,0.55)]",
+    borderColor: "rgba(34, 211, 238, 0.75)",
+    glow: "0 0 20px rgba(34, 211, 238, 0.18)",
+    activeGlow: "0 0 32px rgba(34, 211, 238, 0.45)",
   },
-  "getting-to-know-someone": {
-    emoji: "🤝",
-    subtitle: "Connection prompts",
-    border: "border-yellow-500/70",
-    ring: "ring-yellow-500/40",
-    glow: "shadow-[0_0_14px_rgba(234,179,8,0.25)]",
-    activeGlow: "shadow-[0_0_28px_rgba(234,179,8,0.55)]",
-  },
-  dating: {
-    emoji: "💕",
-    subtitle: "Connection prompts",
-    border: "border-pink-500/70",
-    ring: "ring-pink-500/40",
-    glow: "shadow-[0_0_14px_rgba(236,72,153,0.25)]",
-    activeGlow: "shadow-[0_0_28px_rgba(236,72,153,0.55)]",
-  },
-  "after-dark": {
+  {
+    slug: "after-dark",
     displayTitle: "After Dark",
     subtitle: "50 Foreplay Cards",
     image: "/categories/after-dark.png",
-    border: "border-red-500/80",
-    ring: "ring-red-500/45",
-    glow: "shadow-[0_0_14px_rgba(239,68,68,0.3)]",
-    activeGlow: "shadow-[0_0_28px_rgba(239,68,68,0.6)]",
+    borderColor: "rgba(239, 68, 68, 0.8)",
+    glow: "0 0 20px rgba(239, 68, 68, 0.2)",
+    activeGlow: "0 0 32px rgba(239, 68, 68, 0.45)",
   },
-}
-
-const DEFAULT_STYLE: CategoryStyle = {
-  emoji: "✨",
-  border: "border-white/20",
-  ring: "ring-white/15",
-  glow: "shadow-[0_0_10px_rgba(255,255,255,0.08)]",
-  activeGlow: "shadow-[0_0_20px_rgba(255,255,255,0.2)]",
-}
+]
 
 interface CategoryGridProps {
   categories: Category[]
@@ -84,68 +61,71 @@ export function CategoryGrid({
 }: CategoryGridProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  const visibleDecks = useMemo(() => {
+    const categoryBySlug = new Map(
+      categories.map((category) => [categorySlug(category.title), category])
+    )
+
+    return PRODUCT_DECKS.filter((deck) => categoryBySlug.has(deck.slug))
+  }, [categories])
+
   function scrollByDirection(direction: "left" | "right") {
     scrollRef.current?.scrollBy({
-      left: direction === "left" ? -168 : 168,
+      left: direction === "left" ? -140 : 140,
       behavior: "smooth",
     })
   }
 
+  if (visibleDecks.length === 0) {
+    return null
+  }
+
   return (
-    <div className="relative w-full">
+    <div className="relative -mx-1 w-[calc(100%+0.5rem)]">
       <button
         type="button"
         aria-label="Scroll categories left"
         onClick={() => scrollByDirection("left")}
-        className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full p-1 text-white/35 transition-colors hover:text-white/70"
+        className="absolute -left-0.5 top-[42%] z-10 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
       >
-        <ChevronLeft className="size-5" />
+        <ChevronLeft className="size-6 stroke-[1.5]" />
       </button>
 
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto px-6 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-2.5 overflow-x-auto px-5 py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {categories.map((category) => {
-          const slug = categorySlug(category.title)
-          const isActive = activeCategory === slug
-          const style = CATEGORY_STYLES[slug] ?? DEFAULT_STYLE
-          const title = style.displayTitle ?? category.title
+        {visibleDecks.map((deck) => {
+          const isActive = activeCategory === deck.slug
 
           return (
             <button
-              key={category.id}
+              key={deck.slug}
               type="button"
-              onClick={() => onSelect(slug)}
-              className={`group flex w-[9.5rem] shrink-0 flex-col overflow-hidden rounded-2xl border bg-[#12121c] text-left transition-all duration-200 ${
-                style.border
-              } ${isActive ? `${style.activeGlow} ring-2 ${style.ring}` : style.glow}`}
+              onClick={() => onSelect(deck.slug)}
+              className="group flex w-[7.25rem] shrink-0 flex-col overflow-hidden rounded-[1.125rem] bg-[#0a0a0f] text-left transition-all duration-200"
+              style={{
+                border: `1px solid ${deck.borderColor}`,
+                boxShadow: isActive ? deck.activeGlow : deck.glow,
+              }}
             >
-              <div className="relative flex h-[7.5rem] items-center justify-center bg-[#0a0a0f] px-3 pt-3">
-                {style.image ? (
-                  <Image
-                    src={style.image}
-                    alt=""
-                    width={120}
-                    height={120}
-                    className="h-full w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-[1.03]"
-                  />
-                ) : (
-                  <span className="text-4xl leading-none">
-                    {style.emoji ?? DEFAULT_STYLE.emoji}
-                  </span>
-                )}
+              <div className="flex h-[8.25rem] items-end justify-center px-2 pt-3">
+                <Image
+                  src={deck.image}
+                  alt=""
+                  width={108}
+                  height={108}
+                  className="h-[6.75rem] w-auto max-w-full object-contain object-bottom transition-transform duration-200 group-hover:scale-[1.02]"
+                />
               </div>
 
-              <div className="flex flex-1 flex-col items-center px-2 pb-3 pt-2 text-center">
-                <span className="text-sm font-bold leading-tight text-white">
-                  {title}
+              <div className="flex flex-col items-center px-2 pb-3.5 pt-1 text-center">
+                <span className="text-[0.8125rem] font-bold leading-tight text-white">
+                  {deck.displayTitle}
                 </span>
-                {style.subtitle ? (
-                  <span className="mt-1 text-[0.6875rem] leading-snug text-white/45">
-                    {style.subtitle}
-                  </span>
-                ) : null}
+                <span className="mt-1.5 text-[0.625rem] leading-snug text-white/40">
+                  {deck.subtitle}
+                </span>
               </div>
             </button>
           )
@@ -156,9 +136,9 @@ export function CategoryGrid({
         type="button"
         aria-label="Scroll categories right"
         onClick={() => scrollByDirection("right")}
-        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full p-1 text-white/35 transition-colors hover:text-white/70"
+        className="absolute -right-0.5 top-[42%] z-10 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
       >
-        <ChevronRight className="size-5" />
+        <ChevronRight className="size-6 stroke-[1.5]" />
       </button>
     </div>
   )
