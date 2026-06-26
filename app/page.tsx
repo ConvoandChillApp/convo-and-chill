@@ -35,9 +35,12 @@ export default function HomePage() {
     if (categories.length === 0) return null
 
     const slugs = new Set(categories.map((c) => categorySlug(c.title)))
-    const firstDeck = ["controversial", "expansion", "after-dark"].find((slug) =>
-      slugs.has(slug)
-    )
+    const firstDeck = [
+      "controversial",
+      "getting-to-know-someone",
+      "after-dark",
+      "expansion",
+    ].find((slug) => slugs.has(slug))
     if (firstDeck) return firstDeck
 
     return categorySlug(categories[0].title)
