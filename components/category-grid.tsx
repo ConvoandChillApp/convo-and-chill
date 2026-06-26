@@ -30,11 +30,11 @@ const CATEGORY_CARDS: CategoryCardConfig[] = [
   },
   {
     slug: "getting-to-know-someone",
-    subtitle: "Connection prompts",
-    emoji: "🤝",
-    borderColor: "rgba(234, 179, 8, 0.65)",
-    glow: "0 0 18px rgba(234, 179, 8, 0.12)",
-    activeGlow: "0 0 28px rgba(234, 179, 8, 0.35)",
+    subtitle: "50 Early Stage Qs",
+    image: "/categories/getting-to-know-someone.png",
+    borderColor: "rgba(192, 38, 211, 0.75)",
+    glow: "0 0 20px rgba(192, 38, 211, 0.18)",
+    activeGlow: "0 0 32px rgba(192, 38, 211, 0.45)",
   },
   {
     slug: "after-dark",
