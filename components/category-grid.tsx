@@ -84,7 +84,7 @@ export function CategoryGrid({
 
   function scrollByDirection(direction: "left" | "right") {
     scrollRef.current?.scrollBy({
-      left: direction === "left" ? -140 : 140,
+      left: direction === "left" ? -168 : 168,
       behavior: "smooth",
     })
   }
@@ -116,20 +116,20 @@ export function CategoryGrid({
               key={card.slug}
               type="button"
               onClick={() => onSelect(card.slug)}
-              className="group flex w-[7.25rem] shrink-0 flex-col overflow-hidden rounded-[1.125rem] bg-[#0a0a0f] text-left transition-all duration-200"
+              className="group flex w-[8.375rem] shrink-0 flex-col overflow-hidden rounded-[1.125rem] bg-[#0a0a0f] text-left transition-all duration-200"
               style={{
                 border: `1px solid ${card.borderColor}`,
                 boxShadow: isActive ? card.activeGlow : card.glow,
               }}
             >
-              <div className="flex h-[8.25rem] items-end justify-center px-2 pt-3">
+              <div className="flex h-[10.75rem] items-end justify-center px-1.5 pt-2">
                 {card.image ? (
                   <Image
                     src={card.image}
                     alt=""
-                    width={108}
-                    height={108}
-                    className="h-[6.75rem] w-auto max-w-full object-contain object-bottom transition-transform duration-200 group-hover:scale-[1.02]"
+                    width={140}
+                    height={140}
+                    className="h-[8.75rem] w-auto max-w-full object-contain object-bottom transition-transform duration-200 group-hover:scale-[1.02]"
                   />
                 ) : (
                   <span className="pb-6 text-5xl leading-none">{card.emoji}</span>
