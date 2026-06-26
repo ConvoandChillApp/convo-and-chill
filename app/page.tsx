@@ -33,6 +33,13 @@ export default function HomePage() {
   const resolvedCategorySlug = useMemo(() => {
     if (activeCategorySlug) return activeCategorySlug
     if (categories.length === 0) return null
+
+    const slugs = new Set(categories.map((c) => categorySlug(c.title)))
+    const firstDeck = ["controversial", "expansion", "after-dark"].find((slug) =>
+      slugs.has(slug)
+    )
+    if (firstDeck) return firstDeck
+
     return categorySlug(categories[0].title)
   }, [activeCategorySlug, categories])
 
