@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { FollowUpPromptCard } from "@/components/follow-up-prompt-card"
 import { Header } from "@/components/header"
 import { MainCard } from "@/components/main-card"
+import { ShareLinkOpenedTracker } from "@/components/ShareLinkOpenedTracker"
 import { fetchFollowUpQuestions, fetchQuestionById } from "@/lib/questions"
 import { recordShareEvent } from "@/lib/share-analytics"
 import {
@@ -68,6 +69,10 @@ export default async function SharedQuestionPage({ params }: PageProps) {
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 bg-[#0A0A0F] px-4 pb-10 pt-6">
+      <ShareLinkOpenedTracker
+        questionId={question.id}
+        categoryTitle={question.categoryTitle}
+      />
       <Header />
 
       <div className="flex flex-1 flex-col">

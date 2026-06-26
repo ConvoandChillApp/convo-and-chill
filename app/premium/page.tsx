@@ -2,8 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect } from "react"
 import { Check, Crown, Sparkles } from "lucide-react"
 import { BottomNav } from "@/components"
+import { trackPaywallViewed } from "@/lib/analytics"
 
 const FEATURES = [
   "Unlock After Dark & all premium categories",
@@ -13,6 +15,10 @@ const FEATURES = [
 ]
 
 export default function PremiumPage() {
+  useEffect(() => {
+    trackPaywallViewed()
+  }, [])
+
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-[#0A0A0F] px-4 pb-28 pt-6">
       <div className="flex flex-1 flex-col items-center text-center">

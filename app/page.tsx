@@ -13,6 +13,7 @@ import {
 import { useCategories } from "@/hooks/use-categories"
 import { useQuestions } from "@/hooks/use-questions"
 import { categorySlug } from "@/lib/category-utils"
+import { trackCardShared, trackCardSwiped } from "@/lib/analytics"
 import { buildShareMessage } from "@/lib/share"
 import { incrementShareCount } from "@/lib/share-analytics"
 
@@ -95,25 +96,42 @@ export default function HomePage() {
       try {
         // Plain URL text keeps WhatsApp large-image previews (url+title → compact card).
         await navigator.share({ text: url })
+        trackCardShared(current.id, "native_share")
         return
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return
         await navigator.clipboard.writeText(url)
+        trackCardShared(current.id, "clipboard")
         showCopiedToast()
       }
       return
     }
 
     await navigator.clipboard.writeText(url)
+    trackCardShared(current.id, "clipboard")
     showCopiedToast()
+  }
+
+  function handleGoNext() {
+    if (!canGoNext || loading || !current) return
+
+    trackCardSwiped(current.id, current.categoryTitle)
+    goNext()
+  }
+
+  function handleGoPrev() {
+    if (!canGoPrev || loading || !current) return
+
+    trackCardSwiped(current.id, current.categoryTitle)
+    goPrev()
   }
 
   function handleTouchEnd(endX: number) {
     if (touchStartX === null || loading) return
 
     const delta = endX - touchStartX
-    if (delta < -50 && canGoNext) goNext()
-    else if (delta > 50 && canGoPrev) goPrev()
+    if (delta < -50 && canGoNext) handleGoNext()
+    else if (delta > 50 && canGoPrev) handleGoPrev()
     setTouchStartX(null)
   }
 
@@ -139,8 +157,8 @@ export default function HomePage() {
       </div>
 
       <Controls
-        onPrev={goPrev}
-        onNext={goNext}
+        onPrev={handleGoPrev}
+        onNext={handleGoNext}
         onShare={share}
         disablePrev={!canGoPrev || loading}
         disableNext={!canGoNext || loading}
