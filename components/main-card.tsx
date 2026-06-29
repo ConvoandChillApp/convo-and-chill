@@ -9,12 +9,19 @@ export type MainCardQuestion = {
   category?: string
 }
 
-const CATEGORY_EMOJI: Record<string, string> = {
-  "getting-to-know-someone": "🤝",
-  dating: "💕",
-  controversial: "🔥",
-  expansion: "📦",
-  "after-dark": "😈",
+const CATEGORY_PILL: Record<string, { label: string; emoji: string }> = {
+  "getting-to-know-someone": { label: "Getting To Know Someone", emoji: "🤝" },
+  dating: { label: "Dating", emoji: "💕" },
+  controversial: { label: "Controversial", emoji: "🔥" },
+  expansion: { label: "Controversial", emoji: "🔥" },
+  "after-dark": { label: "After Dark", emoji: "😈" },
+}
+
+function getCategoryPill(categoryTitle: string) {
+  const slug = categorySlug(categoryTitle)
+  return (
+    CATEGORY_PILL[slug] ?? { label: categoryTitle, emoji: "✨" }
+  )
 }
 
 interface MainCardProps {
@@ -53,9 +60,7 @@ function renderHighlightedText(text: string) {
 }
 
 export function MainCard({ question, animationKey = "default" }: MainCardProps) {
-  const emoji = question.category
-    ? CATEGORY_EMOJI[categorySlug(question.category)] ?? "✨"
-    : "✨"
+  const pill = question.category ? getCategoryPill(question.category) : null
 
   return (
     <div className="relative flex w-full flex-1 items-center justify-center py-2">
@@ -77,10 +82,10 @@ export function MainCard({ question, animationKey = "default" }: MainCardProps) 
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#EC4899]/70" />
 
         <div className="relative z-10 flex flex-1 flex-col p-6">
-          {question.category ? (
+          {pill ? (
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-black/35 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-              <span>{emoji}</span>
-              {question.category}
+              <span>{pill.emoji}</span>
+              {pill.label}
             </span>
           ) : null}
 
