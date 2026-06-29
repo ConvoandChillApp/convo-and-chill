@@ -84,7 +84,7 @@ export function CategoryGrid({
 
   function scrollByDirection(direction: "left" | "right") {
     scrollRef.current?.scrollBy({
-      left: direction === "left" ? -168 : 168,
+      left: direction === "left" ? -176 : 176,
       behavior: "smooth",
     })
   }
@@ -94,71 +94,78 @@ export function CategoryGrid({
   }
 
   return (
-    <div className="relative -mx-1 w-[calc(100%+0.5rem)]">
-      <button
-        type="button"
-        aria-label="Scroll categories left"
-        onClick={() => scrollByDirection("left")}
-        className="absolute -left-0.5 top-[42%] z-10 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
-      >
-        <ChevronLeft className="size-6 stroke-[1.5]" />
-      </button>
+    <div className="w-full">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-0.5">
+        <button
+          type="button"
+          aria-label="Scroll categories left"
+          onClick={() => scrollByDirection("left")}
+          className="shrink-0 self-center text-white/30 transition-colors hover:text-white/60"
+        >
+          <ChevronLeft className="size-6 stroke-[1.5]" />
+        </button>
 
-      <div
-        ref={scrollRef}
-        className="flex gap-2.5 overflow-x-auto px-5 py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {visibleCards.map((card) => {
-          const isActive = activeCategory === card.slug
+        <div
+          ref={scrollRef}
+          className="min-w-0 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="flex w-max gap-3 px-1">
+            {visibleCards.map((card) => {
+              const isActive = activeCategory === card.slug
 
-          return (
-            <button
-              key={card.slug}
-              type="button"
-              onClick={() => onSelect(card.slug)}
-              className="group flex w-[8.375rem] shrink-0 flex-col overflow-hidden rounded-[1.125rem] bg-[#0a0a0f] text-left transition-all duration-200"
-              style={{
-                border: `1px solid ${card.borderColor}`,
-                boxShadow: isActive ? card.activeGlow : card.glow,
-              }}
-            >
-              <div className="flex justify-center px-1.5 pt-2 pb-0">
-                {card.image ? (
-                  <Image
-                    src={card.image}
-                    alt=""
-                    width={140}
-                    height={140}
-                    className="h-[8.75rem] w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-                  />
-                ) : (
-                  <span className="pb-6 text-5xl leading-none">{card.emoji}</span>
-                )}
-              </div>
+              return (
+                <div key={card.slug} className="shrink-0 p-1.5">
+                  <button
+                    type="button"
+                    onClick={() => onSelect(card.slug)}
+                    className="group flex w-[8.375rem] flex-col overflow-hidden rounded-[1.125rem] bg-[#0a0a0f] text-left transition-all duration-200"
+                    style={{
+                      border: `1px solid ${card.borderColor}`,
+                      boxShadow: isActive ? card.activeGlow : card.glow,
+                    }}
+                  >
+                    <div className="flex justify-center px-1.5 pt-2 pb-0">
+                      {card.image ? (
+                        <Image
+                          src={card.image}
+                          alt=""
+                          width={140}
+                          height={140}
+                          className="h-[8.75rem] w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+                        />
+                      ) : (
+                        <span className="pb-6 text-5xl leading-none">
+                          {card.emoji}
+                        </span>
+                      )}
+                    </div>
 
-              <div className="flex flex-col items-center px-2 pb-3.5 pt-1 text-center">
-                <span className="text-[0.8125rem] font-bold leading-tight text-white">
-                  {card.title}
-                </span>
-                {card.subtitle ? (
-                  <span className="mt-1.5 text-[0.625rem] leading-snug text-white/40">
-                    {card.subtitle}
-                  </span>
-                ) : null}
-              </div>
-            </button>
-          )
-        })}
+                    <div className="flex flex-col items-center px-2 pb-3.5 pt-1 text-center">
+                      <span className="text-[0.8125rem] font-bold leading-tight text-white">
+                        {card.title}
+                      </span>
+                      {card.subtitle ? (
+                        <span className="mt-1.5 text-[0.625rem] leading-snug text-white/40">
+                          {card.subtitle}
+                        </span>
+                      ) : null}
+                    </div>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          aria-label="Scroll categories right"
+          onClick={() => scrollByDirection("right")}
+          className="shrink-0 self-center text-white/30 transition-colors hover:text-white/60"
+        >
+          <ChevronRight className="size-6 stroke-[1.5]" />
+        </button>
       </div>
-
-      <button
-        type="button"
-        aria-label="Scroll categories right"
-        onClick={() => scrollByDirection("right")}
-        className="absolute -right-0.5 top-[42%] z-10 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
-      >
-        <ChevronRight className="size-6 stroke-[1.5]" />
-      </button>
     </div>
   )
 }
