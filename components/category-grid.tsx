@@ -22,7 +22,7 @@ const CATEGORY_CARDS: CategoryCardConfig[] = [
   {
     slug: "controversial",
     displayTitle: "Original Edition",
-    subtitle: "99 Controversial Cards",
+    subtitle: "Controversial Cards",
     image: "/categories/original-edition.png",
     borderColor: "rgba(186, 230, 253, 0.55)",
     glow: "0 0 18px rgba(186, 230, 253, 0.12)",
@@ -30,7 +30,7 @@ const CATEGORY_CARDS: CategoryCardConfig[] = [
   },
   {
     slug: "getting-to-know-someone",
-    subtitle: "50 Early Stage Qs",
+    subtitle: "Early Stage Qs",
     image: "/categories/getting-to-know-someone.png",
     borderColor: "rgba(192, 38, 211, 0.75)",
     glow: "0 0 20px rgba(192, 38, 211, 0.18)",
@@ -39,7 +39,7 @@ const CATEGORY_CARDS: CategoryCardConfig[] = [
   {
     slug: "after-dark",
     displayTitle: "After Dark",
-    subtitle: "50 Foreplay Cards",
+    subtitle: "Foreplay Cards",
     image: "/categories/after-dark.png",
     borderColor: "rgba(239, 68, 68, 0.8)",
     glow: "0 0 20px rgba(239, 68, 68, 0.2)",
@@ -48,7 +48,7 @@ const CATEGORY_CARDS: CategoryCardConfig[] = [
   {
     slug: "expansion",
     displayTitle: "Expansion",
-    subtitle: "50 Controversial Cards",
+    subtitle: "Controversial Cards",
     image: "/categories/expansion-deck.png",
     borderColor: "rgba(34, 211, 238, 0.75)",
     glow: "0 0 20px rgba(34, 211, 238, 0.18)",
